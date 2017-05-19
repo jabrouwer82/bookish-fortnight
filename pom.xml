@@ -1,0 +1,43 @@
+<!-- [START pom] -->
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>war</packaging>
+  <version>1.0</version>
+  <groupId>com.jabrouwer82.codetest</groupId>
+  <artifactId>derivesystem-codetest</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <properties>
+    <appengine.sdk.version>1.9.53</appengine.sdk.version>
+    <appengine.app.version>1</appengine.app.version>
+    <project.http.version>1.19.0</project.http.version>
+    <project.oauth.version>1.19.0</project.oauth.version>
+  </properties>
+  <build>
+    <!-- for hot reload of the web application -->
+    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.3</version>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>${appengine.sdk.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+<!-- [END pom] -->
