@@ -10,7 +10,7 @@
 		<servlet-name>book</servlet-name>
 		<url-pattern>/book</url-pattern>
 	</servlet-mapping>
-	<!-- [START Objectify] -->
+	
 	<filter>
 		<filter-name>ObjectifyFilter</filter-name>
 		<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
@@ -22,5 +22,4 @@
 	<listener>
 		<listener-class>com.jabrouwer82.codetest.OfyHelper</listener-class>
 	</listener>
-	<!-- [END Objectify] -->
 </web-app>

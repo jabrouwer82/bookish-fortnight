@@ -1,19 +1,3 @@
-/**
- * Copyright 2012 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.jabrouwer82.codetest;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BookServletTest {
 
   private BookServlet bookServlet;
-  private Closeable closeable = null;    // Objectify
+  private Closeable closeable = null;
 
 
   private final LocalServiceTestHelper helper =
@@ -53,7 +37,7 @@ public class BookServletTest {
   @Before
   public void setupSignGuestBookServlet() {
     helper.setUp();
-    closeable = ObjectifyService.begin();  // Objectify
+    closeable = ObjectifyService.begin();
 
     bookServlet = new BookServlet();
   }
@@ -61,13 +45,13 @@ public class BookServletTest {
   @After
   public void tearDownHelper() throws IOException {
     if(closeable != null) {
-      closeable.close();  // Objectify
+      closeable.close();
     }
     helper.tearDown();
   }
   
   @Test
-  public void testDoPost() throws IOException, EntityNotFoundException {
+  public void testDoPost_CompleteBook() throws IOException, EntityNotFoundException {
     HttpServletRequest request = mock(HttpServletRequest.class);
     HttpServletResponse response = mock(HttpServletResponse.class);
 
@@ -86,5 +70,23 @@ public class BookServletTest {
     assertEquals(libraryName, book.getKey().getParent().getName());
     assertEquals(testTitle, book.getProperty("title"));
     assertEquals(testAuthor, book.getProperty("author"));
+  }
+  
+  @Test
+  public void testDoPost_IncompleteBook() throws IOException, EntityNotFoundException {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+
+    when(request.getParameter("libraryName")).thenReturn(null);
+    when(request.getParameter("title")).thenReturn(null);
+    when(request.getParameter("author")).thenReturn(null);
+
+    bookServlet.doPost(request, response);
+
+    Entity book = DatastoreServiceFactory.getDatastoreService().prepare(new Query()).asSingleEntity();
+
+    assertEquals("default", book.getKey().getParent().getName());
+    assertEquals("", book.getProperty("title"));
+    assertEquals("", book.getProperty("author"));
   }
 }

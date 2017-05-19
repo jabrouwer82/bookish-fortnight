@@ -1,19 +1,3 @@
-/**
- * Copyright 2014-2015 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-//[START all]
 package com.jabrouwer82.codetest;
 
 import java.io.IOException;
@@ -28,11 +12,20 @@ public class BookServlet extends HttpServlet {
     Book book;
 
     String libraryName = request.getParameter("libraryName");
-    String title = request.getParameter("title"); //TODO: Validation
-    String author = request.getParameter("author"); //TODO: Validation
+    if (libraryName == null) {
+    	libraryName = "default";
+    }
+    String title = request.getParameter("title");
+    if (title == null) {
+    	title = "";
+    }
+    String author = request.getParameter("author");
+    if (author == null) {
+    	author = "";
+    }
     
     book = new Book(libraryName, title, author);
 
-    OfyHelper.ofy().save().entity(book).now();
+    OfyHelper.ofy().save().entity(book);
   }
 }
