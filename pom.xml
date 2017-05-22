@@ -13,13 +13,13 @@
         <app.version>1</app.version>
         <appengine.version>1.9.53</appengine.version>
 
-        <objectify.version>5.1.13</objectify.version>
+        <objectify.version>5.1.8</objectify.version>
         <guava.version>18.0</guava.version>
         <guice.version>4.1.0</guice.version>
         <jackson.version>2.8.8</jackson.version>
-        <javax.ws.rs.version>2.0.1</javax.ws.rs.version>
-        <glassfish.hk2.version>2.5.0-b36</glassfish.hk2.version>
-        <glassfish.jersey.version>2.26-b04</glassfish.jersey.version>
+        <javax.ws.rs.version>2.1-m07</javax.ws.rs.version>
+        <glassfish.hk2.version>2.5.0-b35</glassfish.hk2.version>
+        <glassfish.jersey.version>2.25.1</glassfish.jersey.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -44,7 +44,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
@@ -98,6 +97,7 @@
             <version>${jackson.version}</version>
         </dependency>
         
+        <!-- Javax Dependencies -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
@@ -116,8 +116,18 @@
             <version>${glassfish.jersey.version}</version>
         </dependency> 
         <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <version>${glassfish.jersey.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.hk2</groupId>
             <artifactId>guice-bridge</artifactId>
+            <version>${glassfish.hk2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-utils</artifactId>
             <version>${glassfish.hk2.version}</version>
         </dependency>
 

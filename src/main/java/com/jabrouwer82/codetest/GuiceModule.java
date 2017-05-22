@@ -15,6 +15,7 @@ import com.googlecode.objectify.ObjectifyFilter;
 public class GuiceModule extends AbstractModule {
     @Override
     protected void configure() {
+    	bind(BookDao.class);
         bind(ObjectifyFilter.class).in(Singleton.class);
     }
 

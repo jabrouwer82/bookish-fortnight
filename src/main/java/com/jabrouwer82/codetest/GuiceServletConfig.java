@@ -3,7 +3,6 @@ package com.jabrouwer82.codetest;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.servlet.GuiceServletContextListener;
-import com.google.inject.servlet.ServletModule;
 
 /**
  * Configures the guice injector.
@@ -21,7 +20,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 
         if (injector == null) {
             injector = Guice.createInjector(
-                new ServletModule(),
+                new CodetestServletModule(),
                 new GuiceModule()
             );
         }

@@ -14,10 +14,10 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 /**
  * Handles Guice and Jersey configuration for handling request conversion using Jackson.
  */
-public class Application extends ResourceConfig {
+public class CodetestApplication extends ResourceConfig {
 
     @Inject
-    public Application(@Context ServletContext servletContext, ServiceLocator serviceLocator) {
+    public CodetestApplication(@Context ServletContext servletContext, ServiceLocator serviceLocator) {
 
         //registers the Jackson stuff
         register(JacksonJaxbJsonProvider.class);
