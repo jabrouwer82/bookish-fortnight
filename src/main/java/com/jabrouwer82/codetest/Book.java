@@ -13,11 +13,15 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class Book {
 
+	// TODO: Convert away from auto-generated ids, manually use app engine id generator
     @Id
     private Long id;
 
     private String title;
     private String author;
+    
+    // Required by objectify.
+    private Book() {};
     
     @JsonCreator
     public Book(
