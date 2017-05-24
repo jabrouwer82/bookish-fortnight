@@ -1,5 +1,6 @@
 package com.jabrouwer82.codetest;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,7 +12,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Web service for handling GET/PUT/POST/DELETE http requests for /book using Jersey/JAX-RS.
@@ -42,8 +46,15 @@ public class BookService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Book saveNewBook(Book book) {
-        return this.dao.save(book);
+    public Response saveNewBook(@Context UriInfo info, Book book) {
+        Book savedBook = this.dao.save(book);
+        info.getAbsolutePathBuilder();
+        info.getAbsolutePathBuilder().path("");
+        
+        URI uri = info.getAbsolutePathBuilder()
+        		.path(savedBook.getId().toString())
+        		.build();
+        return Response.created(uri).entity(savedBook).build();
     }
 
     @PUT

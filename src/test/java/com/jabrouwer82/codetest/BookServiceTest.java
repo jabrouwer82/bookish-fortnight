@@ -9,6 +9,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServlet;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import com.google.appengine.repackaged.org.apache.http.protocol.HTTP;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.common.collect.ImmutableList;
@@ -32,6 +38,7 @@ public class BookServiceTest {
           .setEnvEmail("test@localhost");
   
   @Mock BookDao mockDao;
+  @Mock UriInfo mockUri;
   
   @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -72,13 +79,15 @@ public class BookServiceTest {
   
   @Test
   public void testSaveNewBook() {
-    Book expectedBook = new Book(1234l, "t", "a");
+    Book expectedBook = new Book(1234L, "t", "a");
     
     when(mockDao.save(any(Book.class))).thenReturn(expectedBook);
+    when(mockUri.getAbsolutePathBuilder()).thenReturn(UriBuilder.fromPath("localhost:8080/book"));
 
-    Book actualBook = bookService.saveNewBook(expectedBook);
+    Response actualResponse = bookService.saveNewBook(mockUri, expectedBook);
 
-    assertEquals(expectedBook, actualBook);
+    assertEquals(expectedBook, actualResponse.getEntity());
+    assertEquals(201, actualResponse.getStatus());
   }
   
   @Test
