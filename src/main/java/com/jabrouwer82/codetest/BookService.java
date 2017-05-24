@@ -39,8 +39,12 @@ public class BookService {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Book getBook(@PathParam("id") Long id) {
-        return this.dao.get(id);
+    public Response getBook(@PathParam("id") Long id) {
+        Book book = this.dao.get(id);
+        if (book == null) {
+        	return Response.status(404).build();
+        }
+        return Response.ok(book).build();
     }
 
     @POST
@@ -62,6 +66,7 @@ public class BookService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Book updateBook(@PathParam("id") Long id, Book book) {
+    	
         return this.dao.save(book);
     }
 

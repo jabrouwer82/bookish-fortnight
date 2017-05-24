@@ -54,14 +54,24 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetBook() {
+  public void testGetBook_bookExists() {
     Book expectedBook = new Book(1234l, "t", "a");
     
     when(mockDao.get(anyLong())).thenReturn(expectedBook);
 
-    Book actualBook = bookService.getBook(1234L);
+    Response actualResponse = bookService.getBook(1234L);
 
-    assertEquals(expectedBook, actualBook);
+    assertEquals(expectedBook, actualResponse.getEntity());
+    assertEquals(200, actualResponse.getStatus());
+  }
+  
+  @Test
+  public void testGetBook_bookDoesNotExist() {
+	  when(mockDao.get(anyLong())).thenReturn(null);
+	  
+	  Response response = bookService.getBook(1234L);
+	  
+	  assertEquals(404, response.getStatus());
   }
 
   @Test
