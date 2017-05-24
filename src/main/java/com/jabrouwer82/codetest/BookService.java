@@ -65,9 +65,22 @@ public class BookService {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Book updateBook(@PathParam("id") Long id, Book book) {
-    	
-        return this.dao.save(book);
+    /*
+     * This PUT implementation does not allow for entity creation, 
+     * as our DAO creates ids for new entities, meaning creating would not be idempotent.
+     */
+    public Response updateBook(@Context UriInfo info, @PathParam("id") Long id, Book book) {
+    	Book existingBook = this.dao.get(id);
+    	if (existingBook == null) {
+    		return Response.status(403)
+    				.entity("Please do not use PUT to create entities, use a POST request instead")
+    				.build();
+    	}
+        Book savedBook = this.dao.save(book);
+        URI uri = info.getAbsolutePathBuilder()
+        		.path(savedBook.getId().toString())
+        		.build();
+        return Response.ok(uri).entity(savedBook).build();
     }
 
     @DELETE

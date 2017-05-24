@@ -1,7 +1,6 @@
 package com.jabrouwer82.codetest;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -9,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
@@ -22,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import com.google.appengine.repackaged.org.apache.http.protocol.HTTP;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.common.collect.ImmutableList;
@@ -101,14 +98,28 @@ public class BookServiceTest {
   }
   
   @Test
-  public void testUpdateBook() {
+  public void testUpdateBook_creation() {
+    when(mockDao.get(anyLong())).thenReturn(null);
+    when(mockUri.getAbsolutePathBuilder()).thenReturn(UriBuilder.fromPath("localhost:8080/book"));
+
+    Book requestBook = new Book(1234L, "t", "a");
+    Response response = bookService.updateBook(mockUri, 1234L, requestBook);
+
+    assertEquals(403, response.getStatus());
+  }
+  
+  @Test
+  public void testUpdateBook_update() {
     Book expectedBook = new Book(1234l, "t", "a");
     
+    when(mockDao.get(anyLong())).thenReturn(expectedBook);
     when(mockDao.save(any(Book.class))).thenReturn(expectedBook);
+    when(mockUri.getAbsolutePathBuilder()).thenReturn(UriBuilder.fromPath("localhost:8080/book"));
 
-    Book actualBook = bookService.updateBook(1234L, expectedBook);
+    Response actualResponse = bookService.updateBook(mockUri, 1234L, expectedBook);
 
-    assertEquals(expectedBook, actualBook);
+    assertEquals(expectedBook, actualResponse.getEntity());
+    assertEquals(200, actualResponse.getStatus());
   }
   
   @Test
