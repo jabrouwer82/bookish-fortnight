@@ -52,8 +52,6 @@ public class BookService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveNewBook(@Context UriInfo info, Book book) {
         Book savedBook = this.dao.save(book);
-        info.getAbsolutePathBuilder();
-        info.getAbsolutePathBuilder().path("");
         
         URI uri = info.getAbsolutePathBuilder()
         		.path(savedBook.getId().toString())
