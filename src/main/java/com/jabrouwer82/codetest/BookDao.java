@@ -28,6 +28,7 @@ public class BookDao {
     }
 
     public Book save(Book book) {
+    	// TODO: Convert into a single objectify call, let the Service load the book itself.
         Key<Book> key = objectify.save().entity(book).now();
         return objectify.load().key(key).now();
     }

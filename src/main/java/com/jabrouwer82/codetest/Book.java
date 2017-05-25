@@ -21,7 +21,8 @@ public class Book {
     private String author;
     
     // Required by objectify.
-    private Book() {};
+    @SuppressWarnings("unused")
+	private Book() {};
     
     @JsonCreator
     public Book(
