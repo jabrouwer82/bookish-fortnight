@@ -85,8 +85,13 @@ public class BookService {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void deleteBook(@PathParam("id") Long id) {
+    public Response deleteBook(@PathParam("id") Long id) {
+    	Book existingBook = this.dao.get(id);
+    	if (existingBook == null) {
+    		return Response.status(404).build();
+    	}
     	this.dao.delete(id);
+    	return Response.ok().entity(existingBook).build();
     }
 
 }

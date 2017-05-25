@@ -123,9 +123,23 @@ public class BookServiceTest {
   }
   
   @Test
-  public void testDeleteBook() {
-    bookService.deleteBook(1234L);
-
-    verify(mockDao).delete(1234L);
+  public void testDeleteBook_bookExists() {
+    Book expectedBook = new Book(1234l, "t", "a");
+    
+    when(mockDao.get(anyLong())).thenReturn(expectedBook);
+    
+    Response response = bookService.deleteBook(1234L);
+    
+    assertEquals(expectedBook, response.getEntity());
+    assertEquals(200, response.getStatus());
+  }
+  
+  @Test
+  public void testDeleteBook_bookDoesNotExist() {
+	  when(mockDao.get(anyLong())).thenReturn(null);
+	  
+	  Response response = bookService.deleteBook(1234L);
+	  
+	  assertEquals(404, response.getStatus());
   }
 }
